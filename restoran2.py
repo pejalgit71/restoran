@@ -155,7 +155,7 @@ if (choose == "Order"):
         orderdf = orderdf.reset_index(drop=True)
         orderdf.index = orderdf.index+1
         col3.subheader(":green[Meja No "+tableno+", order sedang dihantar]")
-        col3.write(orderdf[["Item", "Quantity","Item Total"]])
+        col3.write(orderdf[["Item", "Quantity"]])
     # video_file = open('https://youtu.be/Wh66ThpxvI4?si=_2OuZ_t5UBuT3CIC', 'rb')
     # video_bytes = video_file.read()
     col3.video('https://youtu.be/Wh66ThpxvI4?si=_2OuZ_t5UBuT3CIC')
