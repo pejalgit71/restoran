@@ -2,4 +2,5 @@ streamlit== 1.29.0
 pandas
 numpy
 pymysql==1.1.0
-streamlit_gsheets
+it+https://github.com/streamlit/gsheets-connection
+st-gsheets-connection
