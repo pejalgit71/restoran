@@ -8,7 +8,7 @@ import os, fnmatch
 from PIL import Image
 import glob
 
-from streamlit_gsheets import **st.secrets.connections.gsheets
+from streamlit_gsheets import st.secrets.connections.gsheets
 # from streamlit_gsheets import GSheetsConnection
 
 
