@@ -7,8 +7,8 @@ import warnings
 import os, fnmatch
 from PIL import Image
 import glob
-# from streamlit_gsheets import GSheetsConnection
-st.write("My cool secrets:", st.secrets["connections.gsheets"]["spreadsheet"])
+st.write("My cool secrets:", st.secrets["connections.gsheets"])
+from streamlit_gsheets import GSheetsConnection
 
 
 cwd = os.getcwd() 
