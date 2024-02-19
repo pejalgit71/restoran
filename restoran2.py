@@ -7,8 +7,8 @@ import warnings
 import os, fnmatch
 from PIL import Image
 import glob
-
-from streamlit_gsheets import GSheetsConnection
+from st_gsheets_connection import GSheetsConnection
+# from streamlit_gsheets import GSheetsConnection
 
 
 cwd = os.getcwd() 
