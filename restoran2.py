@@ -65,7 +65,7 @@ menu_df.index = menu_df.index+1
 TableNo=0
 
 formside = st.sidebar.form("side_form")
-choose = formside.radio("pilih menu",["Order","Chef", "Admin", "Report"], index=None)
+choose = formside.radio("pilih menu",["Order :rice:","Chef :male-cook:", "Admin :shallow_pan_of_food:", "Report :printer:"], index=None)
 formside.form_submit_button("Submit")
 
 if (choose == "Order"):
