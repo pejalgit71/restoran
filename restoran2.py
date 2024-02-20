@@ -254,7 +254,7 @@ elif (choose == "Report"):
     with st.expander("Report"):
         st.subheader("Total Orders")
         st.write("This section will display the total sales report.")
-        st.subheader(f"Jumlah Jualan RM{total_order:.2f}")
+        st.subheader(f"Jumlah Jualan RM{sale_df['Item Total'].sum():.2f}")
         for i in item_totals:
             st.write(f":blue[{i[0]} RM{i[1]:.2f}]")
        
