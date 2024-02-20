@@ -234,37 +234,27 @@ elif (choose == "Chef"):
             st.success("Order Chef Save and submit successfully!")
 
 elif (choose == "Report"):
-    sale_df = conn.read(worksheet="Sales_report")
+     sale_df = conn.read(worksheet="Sales_report")
     sale_df = pd.DataFrame(sale_df)
     sale_df = sale_df.dropna(subset=["Item"])
     sale_df = sale_df.reset_index(drop=True)
-    sale_df.index = sale_df.index+1
     sale_df = sale_df[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
+    sale_df.index = sale_df.index+1
     st.write(sale_df)
-
+    sale_df["Total Sales"] = sale_df["Quantity"] * sale_df["Price"]
     order_list = {}
+    
     for index, row in sale_df.iterrows():
-        quantity = row['Quantity']
-        if quantity > 0:
-            order_list[row['Item']] = quantity
+        quantity = sale_df[sale_df["Item"] == row["Item"]]["Total Sales"].sum()
+        order_list[row["Item"]] = quantity
 
+    
     # Calculate total order and item totals
-    total_order, item_totals = calculate_total_order(order_list, sale_df)
-    dfmerge = pd.DataFrame
+    
     with st.expander("Report"):
         st.subheader("Total Orders")
         st.write("This section will display the total sales report.")
-        st.subheader(f"Jumlah Jualan RM{sale_df['Item Total'].sum():.2f}")
-        for i in item_totals:
-            st.write(f":blue[{i[0]} RM{i[1]:.2f}]")
-       
-    
-# Add a new column for quantity input
-# menu_df['Quantity'] = menu_df.apply(lambda x: st.number_input(f"Quantity of {x['Item']}", min_value=0, max_value=10, key=x['Item']), axis=1)
+        st.subheader(f"Jumlah Jualan RM{sale_df['Total Sales'].sum():.2f}")
+        # orderlistdf = st.dataframe(order_list)
+        st.dataframe(order_list, column_config={"": "Makanan", "value": "Jumlah RM"})
 
-# Streamlit app
-# def main():
-    
-
-# if __name__ == '__main__':
-    # main()
