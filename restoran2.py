@@ -68,7 +68,7 @@ formside = st.sidebar.form("side_form")
 choose = formside.radio("pilih menu",["Order :rice:","Chef :male-cook:", "Admin :shallow_pan_of_food:", "Report :printer:"], index=None)
 formside.form_submit_button("Submit")
 
-if (choose == "Order"):
+if (choose == "Order :rice:"):
     st.title("Restaurant Menu Display and Order System")
     st.image("menu_food.png")
     col1, col2, col3= st.columns(3)
@@ -146,7 +146,7 @@ if (choose == "Order"):
     # video_bytes = video_file.read()
     col3.video('https://youtu.be/Wh66ThpxvI4?si=_2OuZ_t5UBuT3CIC')
     
-elif (choose == "Admin"):
+elif (choose == "Admin :shallow_pan_of_food:"):
     st.title("Admin Page")
     # updatesale = pd.DataFrame()
     file = []
@@ -187,7 +187,7 @@ elif (choose == "Admin"):
             os.rename(order,"served"+order)
             st.success("Order dah hantar ke pelanggan!")
     
-elif (choose == "Chef"):
+elif (choose == "Chef :male-cook:"):
     st.title("Chef Page")
     cwd = os.getcwd()
     print (cwd)
@@ -207,7 +207,7 @@ elif (choose == "Chef"):
             os.rename(order,"chefdone"+order)
             st.success("Order Chef Save and submit successfully!")
 
-elif (choose == "Report"):
+elif (choose == "Report :printer:"):
     sale_df = conn.read(worksheet="Sales_report")
     sale_df = pd.DataFrame(sale_df)
     sale_df = sale_df.dropna(subset=["Item"])
