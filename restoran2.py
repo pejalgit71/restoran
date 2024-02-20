@@ -240,7 +240,7 @@ elif (choose == "Report"):
     sale_df = sale_df.reset_index(drop=True)
     sale_df.index = sale_df.index+1
     sale_df = sale_df[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
-    # st.write(sale_df)
+    st.write(sale_df)
 
     order_list = {}
     for index, row in sale_df.iterrows():
