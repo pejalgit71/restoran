@@ -234,7 +234,7 @@ elif (choose == "Chef"):
             st.success("Order Chef Save and submit successfully!")
 
 elif (choose == "Report"):
-     sale_df = conn.read(worksheet="Sales_report")
+    sale_df = conn.read(worksheet="Sales_report")
     sale_df = pd.DataFrame(sale_df)
     sale_df = sale_df.dropna(subset=["Item"])
     sale_df = sale_df.reset_index(drop=True)
