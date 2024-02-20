@@ -14,36 +14,10 @@ from streamlit_gsheets import GSheetsConnection
 cwd = os.getcwd() 
 st.write("Current working directory:", cwd) 
 
-# file = []
-# file = fnmatch.filter(os.listdir(cwd+"/pages/images"), '*.png')
-# st.write(file)
-# # images = glob.glob("/Users/xstream/pages/images/")
-# totalimage = len(file)
-# index= st.number_input('Index', min_value=0)
-
-# if st.button('Next'):
-#     index+=1
-#     st.write(index)
-    
-# if st.button('Prev'):
-#     if index > 0:
-#         index = index -1
-#         st.write(index)
-        
-# image = Image.open(cwd+"/pages/images/"+file[index])
-# st.write(cwd+"/pages/images/"+file[index])
-# st.image(image, use_column_width=True)
-
-
 warnings.filterwarnings("ignore")
 
 
-# st.set_page_config(
-# #     page_title="Menu Restoran Xstream",
-# #     page_icon="🧊",
-#     layout="wide",
-# #     initial_sidebar_state="expanded",
-#     )
+
 # Function to calculate total order
     
 def calculate_total_order(order_list, menu_df):
@@ -78,7 +52,7 @@ def report_sales(order_list, total, item_totals):
     return item_totals_df, order_df
     
 # Load menu data from CSV
-st.sidebar.title("Restoran Meracau")
+st.sidebar.title("Restoran Sedap Selalu")
 
 # url ="https://docs.google.com/spreadsheets/d/1XdZbliiwVgXn9i_JtTPme4Iq5zrQmutMApnW0xQcoPA/edit?usp=sharing"
 conn = st.connection("gsheets", type=GSheetsConnection)
@@ -96,7 +70,7 @@ formside.form_submit_button("Submit")
 
 if (choose == "Order"):
     st.title("Restaurant Menu Display and Order System")
-    # st.image("menu_food.png")
+    st.image("menu_food.png")
     col1, col2, col3= st.columns(3)
     # Display menu
     col1.subheader("Menu")
