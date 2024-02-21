@@ -32,7 +32,7 @@ def calculate_total_order(order_list, menu_df):
 
 # Function to save order to CSV
 def save_to_csv(order_list, total, item_totals):
-    timestamp = datetime.now().strftime("%d%m%Y_%H:%M:%S")
+    timestamp = datetime.now().strftime("%d\%m\%Y_%H:%M:%S")
     # order_df = pd.DataFrame(list(order_list.items()), columns=['Item', 'Quantity'])
     # order_df['Total'] = order_df['Item'].apply(lambda x: menu_df.loc[menu_df['Item'] == x, 'Price'].values[0])
     # order_df.to_csv(f'order_{timestamp}.csv', index=False)
@@ -133,7 +133,7 @@ if (choose == "Order :rice:"):
         
         # st.write(dfitem)
     if col1.button("Save/Submit Order"):
-        timestamp = datetime.now().strftime("%d%m%Y_%H:%M:%S")
+        timestamp = datetime.now().strftime("%d\%m\%Y_%H:%M:%S")
         dfmerge = pd.DataFrame
         dftotal,dfitem = report_sales(order_list, total_order, item_totals)
         dfmerge = dfmerge.merge(dfitem, dftotal)
@@ -187,7 +187,7 @@ elif (choose == "Admin :shallow_pan_of_food:"):
         sale_df = sale_df[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
         # st.write("data google", sale_df)
         if st.button('Klik Sini Kalau Dah Hantar ke Meja '+tableno):
-            timestamp = datetime.now().strftime("%d%m%Y_%H%M%S")
+            timestamp = datetime.now().strftime("%d\%m\%Y_%H:%M:%S")
             editedorderdf["Datetime"] = timestamp
             editedorderdf = editedorderdf[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
             # st.write("data editedorderdf", editedorderdf)
