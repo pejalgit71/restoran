@@ -193,7 +193,7 @@ elif (choose == "Admin :shallow_pan_of_food:"):
             # st.write("data editedorderdf", editedorderdf)
             updatesale = pd.concat([sale_df, editedorderdf], axis=0)
             
-            st.write(updatesale)
+            # st.write(updatesale)
             # editedorderdf.to_csv('sales_report_'+tableno+'_'+timestamp+'.csv')
             conn.update(worksheet="Sales_report", data=updatesale)
             os.rename(order,"served"+order)
