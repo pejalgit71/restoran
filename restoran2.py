@@ -89,6 +89,7 @@ if (choose == "Order :rice:"):
     col1.data_editor(
     menu_display_df,
     column_config={
+        "Price (RM)": st.column_config.NumberColumn(format="RM %.2f"),
         "Picture": st.column_config.ImageColumn(
             "Gambar", help="Cadangan Hiasan"
         )
