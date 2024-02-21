@@ -57,9 +57,10 @@ st.sidebar.title("Restoran Sedap Selalu")
 # url ="https://docs.google.com/spreadsheets/d/1XdZbliiwVgXn9i_JtTPme4Iq5zrQmutMApnW0xQcoPA/edit?usp=sharing"
 conn = st.connection("gsheets", type=GSheetsConnection)
 # menu_df = conn.read(spreadsheet=url,nrows=7,  worksheet="menu")
-menu_df = conn.read(nrows=7,ttl="10m",  worksheet="menu")
+menu_df = conn.read(nrows=7, usecols=list(range(3)), ttl="10m",  worksheet="menu")
 # menu_df = pd.read_csv("menu.csv")
 menu_df = pd.DataFrame(menu_df)
+menu_df = menu_df.dropna(subset=["Item"])
 menu_df = menu_df.reset_index(drop=True)
 menu_df.index = menu_df.index+1
 TableNo=0
@@ -81,10 +82,20 @@ if (choose == "Order :rice:"):
     menu_df['Quantity'] = menu_df.apply(lambda x: col2.number_input(f"Quantity of {x['Item']}", min_value=0, max_value=10, key=x['Item']), axis=1)
     menu_display_df = menu_df.drop(columns=['Quantity'])  # Exclude the Quantity column from display
     menu_display_df = menu_display_df.rename(columns={'Price': 'Price (RM)'})
-    col1.write(menu_display_df[["Item","Price (RM)"]])
+    # col1.write(menu_display_df[["Item","Price (RM)"]])
     # col1.write(menu_df[["Item","Quantity"]])
     # Order section
 
+    col1.data_editor(
+    menu_display_df,
+    column_config={
+        "Picture": st.column_config.ImageColumn(
+            "Gambar", help="Cadangan Hiasan"
+        )
+    },disabled=["Item", "Price (RM)", "Picture"],
+    hide_index=True,
+    )
+    
     # Create order dictionary
     order_list = {}
     for index, row in menu_df.iterrows():
