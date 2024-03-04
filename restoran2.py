@@ -1,23 +1,50 @@
 import streamlit as st
 st.set_page_config(layout="wide")
-
+import warnings
 import pandas as pd
 from datetime import datetime
 import warnings
 import os, fnmatch
 from PIL import Image
 import glob
-# from st_gsheets_connection import GSheetsConnection
+warnings.filterwarnings("ignore")
+
 from streamlit_gsheets import GSheetsConnection
 
 
 cwd = os.getcwd() 
 st.write("Current working directory:", cwd) 
 
+# file = []
+# file = fnmatch.filter(os.listdir(cwd+"/pages/images"), '*.png')
+# st.write(file)
+# # images = glob.glob("/Users/xstream/pages/images/")
+# totalimage = len(file)
+# index= st.number_input('Index', min_value=0)
+
+# if st.button('Next'):
+#     index+=1
+#     st.write(index)
+    
+# if st.button('Prev'):
+#     if index > 0:
+#         index = index -1
+#         st.write(index)
+        
+# image = Image.open(cwd+"/pages/images/"+file[index])
+# st.write(cwd+"/pages/images/"+file[index])
+# st.image(image, use_column_width=True)
+
+
 warnings.filterwarnings("ignore")
 
 
-
+# st.set_page_config(
+# #     page_title="Menu Restoran Xstream",
+# #     page_icon="🧊",
+#     layout="wide",
+# #     initial_sidebar_state="expanded",
+#     )
 # Function to calculate total order
     
 def calculate_total_order(order_list, menu_df):
@@ -32,7 +59,7 @@ def calculate_total_order(order_list, menu_df):
 
 # Function to save order to CSV
 def save_to_csv(order_list, total, item_totals):
-    timestamp = datetime.now().strftime("%d\%m\%Y_%H:%M:%S")
+    timestamp = datetime.now().strftime("%d/%m/%Y_%H:%M:%S")
     # order_df = pd.DataFrame(list(order_list.items()), columns=['Item', 'Quantity'])
     # order_df['Total'] = order_df['Item'].apply(lambda x: menu_df.loc[menu_df['Item'] == x, 'Price'].values[0])
     # order_df.to_csv(f'order_{timestamp}.csv', index=False)
@@ -57,7 +84,7 @@ st.sidebar.title("Restoran Sedap Selalu")
 # url ="https://docs.google.com/spreadsheets/d/1XdZbliiwVgXn9i_JtTPme4Iq5zrQmutMApnW0xQcoPA/edit?usp=sharing"
 conn = st.connection("gsheets", type=GSheetsConnection)
 # menu_df = conn.read(spreadsheet=url,nrows=7,  worksheet="menu")
-menu_df = conn.read(nrows=7, usecols=list(range(3)), ttl="10m",  worksheet="menu")
+menu_df = conn.read(nrows=7, usecols=list(range(3)), ttl="1m",  worksheet="menu")
 # menu_df = pd.read_csv("menu.csv")
 menu_df = pd.DataFrame(menu_df)
 menu_df = menu_df.dropna(subset=["Item"])
@@ -70,8 +97,8 @@ choose = formside.radio("pilih menu",["Order :rice:","Chef :male-cook:", "Admin 
 formside.form_submit_button("Submit")
 
 if (choose == "Order :rice:"):
-    st.title("Restaurant Menu Display and Order System")
-    st.image("menu_food.png")
+    st.title("Restaurant Menu Sedap Selalu")
+    # st.image("menu_food.png")
     col1, col2, col3= st.columns(3)
     # Display menu
     col1.subheader("Menu")
@@ -83,8 +110,6 @@ if (choose == "Order :rice:"):
     menu_display_df = menu_df.drop(columns=['Quantity'])  # Exclude the Quantity column from display
     menu_display_df = menu_display_df.rename(columns={'Price': 'Price (RM)'})
     # col1.write(menu_display_df[["Item","Price (RM)"]])
-    # col1.write(menu_df[["Item","Quantity"]])
-    # Order section
 
     col1.data_editor(
     menu_display_df,
@@ -97,6 +122,10 @@ if (choose == "Order :rice:"):
     hide_index=True,
     )
     
+    
+    # col1.write(menu_df[["Item","Quantity"]])
+    # Order section
+
     # Create order dictionary
     order_list = {}
     for index, row in menu_df.iterrows():
@@ -139,6 +168,11 @@ if (choose == "Order :rice:"):
         dfmerge = dfmerge.merge(dfitem, dftotal)
         dfmerge.to_csv(f'sales_order_{TableNo}_{timestamp}.csv', index=False)
         # conn.update(worksheet="Sales_order", data=dfmerge)
+        # st.toast('Hip!')
+        # time.sleep(.5)
+        # st.toast('Hip!')
+        # time.sleep(.5)
+        st.toast('Hooray!', icon='🎉')
         col1.success("Order saved and submit successfully!")
         
 
@@ -158,46 +192,77 @@ if (choose == "Order :rice:"):
     # video_bytes = video_file.read()
     col3.video('https://youtu.be/Wh66ThpxvI4?si=_2OuZ_t5UBuT3CIC')
     
+    
+   
+    
 elif (choose == "Admin :shallow_pan_of_food:"):
-    st.title("Admin Page")
-    # updatesale = pd.DataFrame()
-    file = []
-    file = fnmatch.filter(os.listdir(cwd), 'sales_chef*.csv')
-    for order in file:
-        tableno = order[11]
-        orderdf = pd.read_csv(order)
-        orderdf = orderdf.reset_index(drop=True)
-        orderdf.index = orderdf.index+1
-        orderdf["Rating"]= 5
-        editedorderdf = st.data_editor(
-            orderdf[["Item", "Quantity", "Price", "Item Total", "Rating"]], column_config={
-                "Rating": st.column_config.NumberColumn(
-                    "Your rating",
-                    help="Rating Star (1-5)?",
-                    min_value=1,
-                    max_value=5,step=1,
-                    format="%d ⭐",
-                ),
-            },disabled=["Item", "Quantity", "Price", "Item Total"], hide_index=True)
+    rahsia = st.number_input('Masukkan Kod', format= "%d", placeholder="Masukkan Kata Rahsia", step=1)
+    if rahsia == 12345:
+    
+        st.title("Admin Page")
+        # st.image("menu_food.png")
+        tab1, tab2, tab3 = st.tabs(["Menu Makanan - Suntingan/Edit", "Order Kena Hantar", "Jualan Terkini"])
+        # col1, col2, col3= st.columns(3)
+        # Display menu
+        # col1.subheader("Menu Makanan - Suntingan/Edit")
+        # col2.subheader("Order Kena Hantar")
+        # col3.subheader("Jualan Terkini")
         
-        st.write(f"Chef Dah Siap untuk meja :{tableno}")
-        sale_df = conn.read(worksheet="Sales_report")
-        sale_df = pd.DataFrame(sale_df)
-        sale_df = sale_df.dropna(subset=["Item"])
-        sale_df = sale_df[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
-        # st.write("data google", sale_df)
-        if st.button('Klik Sini Kalau Dah Hantar ke Meja '+tableno):
-            timestamp = datetime.now().strftime("%d\%m\%Y_%H:%M:%S")
-            editedorderdf["Datetime"] = timestamp
-            editedorderdf = editedorderdf[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
-            # st.write("data editedorderdf", editedorderdf)
-            updatesale = pd.concat([sale_df, editedorderdf], axis=0)
+        # col1 edit menu makanan
+        editmenu_df = tab1.data_editor(
+                menu_df[["Item", "Price", "Picture"]], column_config={
+                    "Item": "Edit Nama Menu",
+                    "Price": st.column_config.NumberColumn(
+                        "Harga Baru",
+                        help="Tukarkan Harga",
+                        min_value=1.00,
+                        max_value=20.00,step=0.10,
+                        format="%.2f",
+                    ),
+                    "Picture": "Link Gambar Baru",
+                }, hide_index=True)
+        if tab1.button('Klik Sini Kemaskini Menu Baru'):
+            conn.update(worksheet="menu", data=editmenu_df)
+            tab1.success("Menu Berjaya dikemaskini")
             
-            # st.write(updatesale)
-            # editedorderdf.to_csv('sales_report_'+tableno+'_'+timestamp+'.csv')
-            conn.update(worksheet="Sales_report", data=updatesale)
-            os.rename(order,"served"+order)
-            st.success("Order dah hantar ke pelanggan!")
+        # col2 updatesale = pd.DataFrame()
+        file = []
+        file = fnmatch.filter(os.listdir(cwd), 'sales_chef*.csv')
+        for order in file:
+            tableno = order[11]
+            orderdf = pd.read_csv(order)
+            orderdf = orderdf.reset_index(drop=True)
+            orderdf.index = orderdf.index+1
+            orderdf["Rating"]= 5
+            editedorderdf = tab2.data_editor(
+                orderdf[["Item", "Quantity", "Price", "Item Total", "Rating"]], column_config={
+                    "Rating": st.column_config.NumberColumn(
+                        "Your rating",
+                        help="Rating Star (1-5)?",
+                        min_value=1,
+                        max_value=5,step=1,
+                        format="%d ⭐",
+                    ),
+                },disabled=["Item", "Quantity", "Price", "Item Total"], hide_index=True)
+            
+            tab2.write(f"Chef Dah Siap untuk meja :{tableno}")
+            sale_df = conn.read(worksheet="Sales_report")
+            sale_df = pd.DataFrame(sale_df)
+            sale_df = sale_df.dropna(subset=["Item"])
+            sale_df = sale_df[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
+            # st.write("data google", sale_df)
+            if tab2.button('Klik Sini Kalau Dah Hantar ke Meja '+tableno):
+                timestamp = datetime.now().strftime("%d\%m\%Y_%H:%M:%S")
+                editedorderdf["Datetime"] = timestamp
+                editedorderdf = editedorderdf[["Item", "Quantity", "Price", "Item Total", "Rating", "Datetime"]]
+                # st.write("data editedorderdf", editedorderdf)
+                updatesale = pd.concat([sale_df, editedorderdf], axis=0)
+                
+                # st.write(updatesale)
+                # editedorderdf.to_csv('sales_report_'+tableno+'_'+timestamp+'.csv')
+                conn.update(worksheet="Sales_report", data=updatesale)
+                os.rename(order,"served"+order)
+                tab2.success("Order dah hantar ke pelanggan!")
     
 elif (choose == "Chef :male-cook:"):
     st.title("Chef Page")
@@ -229,18 +294,39 @@ elif (choose == "Report :printer:"):
     st.write(sale_df)
     sale_df["Total Sales"] = sale_df["Quantity"] * sale_df["Price"]
     order_list = {}
+    order_listSQ = {}
+    order_listSS = {}
     
     for index, row in sale_df.iterrows():
-        quantity = sale_df[sale_df["Item"] == row["Item"]]["Total Sales"].sum()
-        order_list[row["Item"]] = quantity
-
+        subsales = sale_df[sale_df["Item"] == row["Item"]]["Total Sales"].sum()
+        subquantity = sale_df[sale_df["Item"] == row["Item"]]["Quantity"].sum()
+        order_listSQ[row["Item"]] =  subquantity
+        order_listSS[row["Item"]] =  subsales
+   
     
-    # Calculate total order and item totals
+    # st.write(orderSQ.style.highlight_max(axis=0))
+    # st.write(orderSS.style.highlight_max(axis=0))
+    # editedorderSQ = st.data_editor(
+    #         orderSQ,column_config={"Key":"Menu", "Values":"Kuantiti"})
+    # editedorderSS = st.data_editor(
+    #         orderSS,column_config={"Key":"Menu", "Values":"Total (RM)"})
+    
+    
     
     with st.expander("Report"):
         st.subheader("Total Orders")
         st.write("This section will display the total sales report.")
         st.subheader(f"Jumlah Jualan RM{sale_df['Total Sales'].sum():.2f}")
-        # orderlistdf = st.dataframe(order_list)
-        st.dataframe(order_list, column_config={"": "Makanan", "value": "Jumlah RM"})
+        orderSQ = pd.DataFrame(list(order_listSQ.items()), columns=['Key', 'Values'])
+        orderSS = pd.DataFrame(list(order_listSS.items()), columns=['Key', 'Values'])
+        orderSQ["Jumlah RM"] = orderSS["Values"]
+        orderSQ.rename(columns = {'Values':'Kuantiti'}, inplace = True) 
+        orderSQ.rename(columns = {'Key':'Menu'}, inplace = True) 
+        orderSQ.index = orderSQ.index+1
+        st.write(orderSQ.style.highlight_min(axis=0))
+        st.bar_chart(orderSQ, x="Menu")
+
+
+
+        
 
